@@ -5,6 +5,10 @@ package com.mmall.common;
  */
 public class  Const {
 
+   public interface RedisCacheExtime{
+      int REDIS_SESSION_EXTIME=60*30;
+   }
+
    public static final String CURRENT_USER="currentUser";
 
    public  static final String USERNAME="username";
