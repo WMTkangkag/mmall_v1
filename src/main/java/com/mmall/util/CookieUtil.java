@@ -33,6 +33,7 @@ public class CookieUtil {
         Cookie ck=new Cookie(COOKIE_NAME,token);
         ck.setDomain(COOKIE_DOMAIN);
         ck.setPath("/");//代表设置在根目录
+        ck.setHttpOnly(true);//为了防止脚本攻击带来的信息泄露风险，脚本不会获得我们的cookie信息
         ck.setMaxAge(60*60*2*365);//如果是-1，代表永久，如不设置就不会写入硬盘。而是写在内层，只在当前页面有效。
         log.info("write cookiename:{} ,cookievalue:{}",ck.getName(),ck.getValue());
         response.addCookie(ck);
