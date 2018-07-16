@@ -9,6 +9,8 @@ public class  Const {
       int REDIS_SESSION_EXTIME=60*30;
    }
 
+   public static String TOKEN_PREFIX="token_";
+
    public static final String CURRENT_USER="currentUser";
 
    public  static final String USERNAME="username";
