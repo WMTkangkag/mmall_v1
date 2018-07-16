@@ -1,6 +1,5 @@
 package com.mmall.controller.backend;
 
-import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
@@ -8,19 +7,15 @@ import com.mmall.service.ICategoryService;
 import com.mmall.service.IUserService;
 import com.mmall.util.CookieUtil;
 import com.mmall.util.JsonUtil;
-import com.mmall.util.RedisPoolUtil;
-import com.mmall.vo.CartVo;
+import com.mmall.util.RedisSharedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by txk on 2018/5/31.
@@ -42,7 +37,7 @@ public class CategoryManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser= JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，请重新登陆");
@@ -64,7 +59,7 @@ public class CategoryManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser= JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，请重新登陆");
@@ -86,7 +81,7 @@ public class CategoryManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser= JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，请重新登陆");
@@ -108,7 +103,7 @@ public class CategoryManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser= JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，请重新登陆");

@@ -1,7 +1,6 @@
 package com.mmall.controller.backend;
 
 import com.google.common.collect.Maps;
-import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Product;
@@ -9,10 +8,7 @@ import com.mmall.pojo.User;
 import com.mmall.service.IFileService;
 import com.mmall.service.IProductService;
 import com.mmall.service.IUserService;
-import com.mmall.util.CookieUtil;
-import com.mmall.util.JsonUtil;
-import com.mmall.util.PropertiesUtil;
-import com.mmall.util.RedisPoolUtil;
+import com.mmall.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -47,7 +42,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -68,7 +63,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -88,7 +83,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -108,7 +103,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -129,7 +124,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -149,7 +144,7 @@ public class ProductManagerController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return ServerResponse.createByError(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆");
@@ -180,7 +175,7 @@ public class ProductManagerController {
             map.put("msg","用户未登陆");
             return map;
         }
-        String userJsonStr= RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user= JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             Map map=Maps.newHashMap();

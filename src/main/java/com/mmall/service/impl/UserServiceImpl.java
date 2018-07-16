@@ -6,8 +6,7 @@ import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
-import com.mmall.util.RedisPoolUtil;
-import com.sun.corba.se.spi.activation.Server;
+import com.mmall.util.RedisSharedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,7 +94,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMassage("问题答案错误");
         }
         String token = UUID.randomUUID().toString();
-        RedisPoolUtil.setEx(Const.TOKEN_PREFIX + username,token,60*60*12);
+        RedisSharedPoolUtil.setEx(Const.TOKEN_PREFIX + username,token,60*60*12);
         return ServerResponse.createBySuccess(token);
     }
 
@@ -108,7 +107,7 @@ public class UserServiceImpl implements IUserService {
             //用户不存在
             return ServerResponse.createByErrorMassage("用户不存在");
         }
-        String token =RedisPoolUtil.get(Const.TOKEN_PREFIX + username);
+        String token = RedisSharedPoolUtil.get(Const.TOKEN_PREFIX + username);
         if (StringUtils.isBlank(token)) {
             return ServerResponse.createByErrorMassage("token已经失效");
         }

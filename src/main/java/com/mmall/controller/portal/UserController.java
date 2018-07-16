@@ -1,14 +1,13 @@
 package com.mmall.controller.portal;
 
 import com.mmall.common.Const;
-import com.mmall.common.RedisPool;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.CookieUtil;
 import com.mmall.util.JsonUtil;
-import com.mmall.util.RedisPoolUtil;
+import com.mmall.util.RedisSharedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +43,7 @@ public class UserController {
          //如果返回的是正确信息就把客户信息放到session域中
          if(response.isSuccess()){
              CookieUtil.writeLoginToken(httpServletResponse,session.getId());
-             RedisPoolUtil.setEx(session.getId(),JsonUtil.obj2String(response.getData()),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+             RedisSharedPoolUtil.setEx(session.getId(),JsonUtil.obj2String(response.getData()),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
          }
          return  response;
      }
@@ -60,7 +59,7 @@ public class UserController {
 
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
-        RedisPoolUtil.del(loginToken);
+        RedisSharedPoolUtil.del(loginToken);
         return ServerResponse.createBySuccessMassage("用户退出成功");
     }
 
@@ -102,7 +101,7 @@ public class UserController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr=RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user=JsonUtil.string2Obj(userJsonStr,User.class);
         if(user!=null){
             return ServerResponse.createBySuccess(user);
@@ -168,7 +167,7 @@ public class UserController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr=RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User user=JsonUtil.string2Obj(userJsonStr,User.class);
         if(user==null){
             return  ServerResponse.createByErrorMassage("用户未登陆");
@@ -191,7 +190,7 @@ public class UserController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr=RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser=JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByErrorMassage("用户未登陆");
@@ -201,7 +200,7 @@ public class UserController {
         user.setUsername(currentUser.getUsername());
         ServerResponse<User> response = iUserService.updateInfomation(user);
         if(response.isSuccess()) {
-            RedisPoolUtil.set(loginToken, JsonUtil.obj2String(response.getData()));
+            RedisSharedPoolUtil.set(loginToken, JsonUtil.obj2String(response.getData()));
             //session.setAttribute(Const.CURRENT_USER, response.getData());
         }
         return response;
@@ -221,7 +220,7 @@ public class UserController {
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
         }
-        String userJsonStr=RedisPoolUtil.get(loginToken);
+        String userJsonStr= RedisSharedPoolUtil.get(loginToken);
         User currentUser=JsonUtil.string2Obj(userJsonStr,User.class);
         if(currentUser==null){
             return ServerResponse.createByErrorMassage("用户未登陆");
