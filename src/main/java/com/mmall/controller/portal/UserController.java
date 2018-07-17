@@ -97,6 +97,7 @@ public class UserController {
     @RequestMapping(value ="get_user_info.do",method = RequestMethod.POST)
     @ResponseBody
     public  ServerResponse<User> getUserInfo(HttpServletRequest httpServletRequest){
+
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
