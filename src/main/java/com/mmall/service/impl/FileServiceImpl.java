@@ -34,9 +34,9 @@ public class FileServiceImpl implements IFileService {
         }
         File targetFile=new File(path,uploadFileName);
         try {
-            //上传文件
+            //上传文件到tomcat指定的upload目录下
             file.transferTo(targetFile);
-            //文件上传到ftp服务器
+            //再把tomcat的upload中的文件上传到ftp服务器
             FTPUtil.uploadFile(Lists.newArrayList(targetFile));
             //上传完成之后，删除upload下面的文件
             targetFile.delete();

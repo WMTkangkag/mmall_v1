@@ -35,7 +35,7 @@ public class OrderManageController {
     @ResponseBody
     public ServerResponse<PageInfo> orderList(HttpServletRequest httpServletRequest, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
 
-        //User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -50,13 +50,15 @@ public class OrderManageController {
             return iOrderService.manageList(pageNum,pageSize);
         }else {
             return  ServerResponse.createByErrorMassage("不是管理员，没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iOrderService.manageList(pageNum,pageSize);
     }
 
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse<OrderVo> orderDetail(HttpServletRequest httpServletRequest, Long orderNo){
-        //User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
+       /* //User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -71,7 +73,9 @@ public class OrderManageController {
             return iOrderService.manageDetail(orderNo);
         }else {
             return  ServerResponse.createByErrorMassage("不是管理员，没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iOrderService.manageDetail(orderNo);
     }
 
     /**
@@ -85,7 +89,7 @@ public class OrderManageController {
     @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse<PageInfo> orderSearch(HttpServletRequest httpServletRequest, Long orderNo, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        //User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -100,7 +104,9 @@ public class OrderManageController {
             return iOrderService.manageSearch(orderNo, pageNum, pageSize);
         }else {
             return  ServerResponse.createByErrorMassage("不是管理员，没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iOrderService.manageSearch(orderNo, pageNum, pageSize);
     }
 
     /**
@@ -114,7 +120,7 @@ public class OrderManageController {
     @RequestMapping("send_goods.do")
     @ResponseBody
     public ServerResponse<String> orderSendGoods(HttpServletRequest httpServletRequest, Long orderNo, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        //User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User currentUser= (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -129,7 +135,9 @@ public class OrderManageController {
             return iOrderService.manageSendGoods(orderNo);
         }else {
             return  ServerResponse.createByErrorMassage("不是管理员，没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iOrderService.manageSendGoods(orderNo);
     }
 
 }

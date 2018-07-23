@@ -37,7 +37,7 @@ public class ProductManagerController {
     @RequestMapping("save.do")
     @ResponseBody
     public ServerResponse saveOrUpdate(HttpServletRequest httpServletRequest, Product product){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -52,13 +52,17 @@ public class ProductManagerController {
             return response;
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        ServerResponse response = iProductService.saveOrUpdateProduct(product);
+        return response;
+
     }
 
     @RequestMapping("set_sale_status.do")
     @ResponseBody
     public ServerResponse setSaleStatus(HttpServletRequest httpServletRequest,Integer productId,Integer status){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+       /* //User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -72,13 +76,15 @@ public class ProductManagerController {
             return iProductService.setSaleStatus(productId,status);
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iProductService.setSaleStatus(productId,status);
     }
 
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse getProductDetail(HttpServletRequest httpServletRequest,Integer productId){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -92,13 +98,15 @@ public class ProductManagerController {
             return iProductService.manageGetProductDetail(productId);
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iProductService.manageGetProductDetail(productId);
     }
 
     @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse getList(HttpServletRequest httpServletRequest, @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -112,14 +120,16 @@ public class ProductManagerController {
            return iProductService.getProductList(pageNum,pageSize);
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iProductService.getProductList(pageNum,pageSize);
     }
 
 
     @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse getList(HttpServletRequest httpServletRequest,String productName,Integer productId ,@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -133,13 +143,15 @@ public class ProductManagerController {
             return iProductService.searchProductList(productName,productId,pageNum,pageSize);
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
-        }
+        }*/
+        //全部通过拦截器进行权限认证
+        return iProductService.searchProductList(productName,productId,pageNum,pageSize);
     }
 
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpServletRequest httpServletRequest,@RequestParam(value = "upload_file",required =false) MultipartFile file, HttpServletRequest request){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+        /*//User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             return  ServerResponse.createByErrorMassage("用户未登陆，无法获取用户登录信息");
@@ -161,13 +173,25 @@ public class ProductManagerController {
 
         }else {
             return ServerResponse.createByErrorMassage("该用户没有权限");
+        }*/
+        //全部通过拦截器进行权限认证
+        Map map=Maps.newHashMap();
+        String path=request.getSession().getServletContext().getRealPath("upload");//获取服务器上upload的绝对路径
+        String targetFileName = iFileService.upload(file, path);
+        if(StringUtils.isBlank(targetFileName)){
+            map.put("success",false);
+            map.put("msg","上传失败");
         }
+        String url= PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
+        map.put("uri",targetFileName);
+        map.put("url",url);
+        return ServerResponse.createBySuccess(map);
     }
 
     @RequestMapping("richtext_img_upload.do")
     @ResponseBody
     public Map richTextImgupload(HttpServletRequest httpServletRequest,@RequestParam(value = "upload_file",required =false) MultipartFile file, HttpServletRequest request){
-        //User user = (User) session.getAttribute(Const.CURRENT_USER);
+       /* //User user = (User) session.getAttribute(Const.CURRENT_USER);
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
             Map map=Maps.newHashMap();
@@ -197,7 +221,20 @@ public class ProductManagerController {
             map.put("success",false);
             map.put("msg","无权限");
             return map;
+        }*/
+        //全部通过拦截器进行权限认证
+        Map map=Maps.newHashMap();
+        String path=request.getSession().getServletContext().getRealPath("upload");
+        String targetFileName = iFileService.upload(file, path);
+        if(StringUtils.isBlank(targetFileName)){
+            map.put("success",false);
+            map.put("msg","上传失败");
         }
+        String url= PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
+        map.put("success",true);
+        map.put("msg","上传成功");
+        map.put("file_path",url);
+        return map;
     }
 
 

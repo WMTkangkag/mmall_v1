@@ -24,4 +24,9 @@ public interface ProductMapper {
 
     List<Product> selectBykeywordAndCategoryIds(@Param(value = "keyword")String keyword,@Param(value ="categoryIdList")List<Integer> categoryIdList);
 
+    /*这里一定要用Integer，考虑到删除产品表中该商品会返回一个null*/
+    Integer selectStockByProductId(Integer id);
+
+    int closeOrderByorderId(Integer id);
+
 }

@@ -21,22 +21,24 @@ import javax.servlet.http.HttpSession;
  * Created by txk on 2018/5/30.
  */
 @Controller
-@RequestMapping("/manager/user/")
+@RequestMapping("/manage/user/")
 public class UserManagerController {
 
     @Autowired
     private IUserService iUserService;
 
 
-    @RequestMapping(value = "login.do",method = RequestMethod.POST)
+    @RequestMapping(value="login.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<User> login(String username , String password,HttpSession session, HttpServletResponse httpServletResponse){
+    public ServerResponse<User> login(String username , String password,HttpServletResponse httpServletResponse,HttpSession session){
 
         ServerResponse<User> response = iUserService.login(username, password);
         if(response.isSuccess()){
             if(response.getData().getRole()== Const.Role.ROLE_ADMIN){
                 CookieUtil.writeLoginToken(httpServletResponse,session.getId());
                 RedisSharedPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+
+                //ession.setAttribute(Const.CURRENT_USER,user);
                 return response;
             }
             return ServerResponse.createByErrorMassage("不是管理员无法登陆");
